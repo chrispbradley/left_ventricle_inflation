@@ -44,7 +44,7 @@ def BasicSetUp(regionUserNumber, coordinateSystemUserNumber):
     region.CreateFinish()
 
     # Output for diagnostics
-    print "----> Set up coordinate system and world region <----\n"
+    print("----> Set up coordinate system and world region <----\n")
 
     return numberOfComputationalNodes, computationalNodeNumber, coordinateSystem, region
 
@@ -65,7 +65,7 @@ def BasisFunction(basisUserNumber, numOfXi, option, collapsed):
         basis.quadratureNumberOfGaussXi = [2,2,2]
         basis.CreateFinish()
         # Output for diagnostics
-        print "----> Set up trilinear basis functions for geometry, use element based interpolation for pressure <----\n"
+        print("----> Set up trilinear basis functions for geometry, use element based interpolation for pressure <----\n")
         if collapsed:
             basisCol = iron.Basis()
             basisCol.CreateStart(basisUserNumber+1)
@@ -75,7 +75,7 @@ def BasisFunction(basisUserNumber, numOfXi, option, collapsed):
             basisCol.QuadratureLocalFaceGaussEvaluateSet(True)
             basisCol.quadratureNumberOfGaussXi = [2,2,2]
             basisCol.CollapsedXiSet([iron.BasisXiCollapse.XI_COLLAPSED, iron.BasisXiCollapse.COLLAPSED_AT_XI0, iron.BasisXiCollapse.NOT_COLLAPSED])
-            print "---> Set up collapsed basis functions for apical elements"
+            print("---> Set up collapsed basis functions for apical elements")
             basisCol.CreateFinish()
             return basis, basisCol
         return basis
@@ -95,7 +95,7 @@ def BasisFunction(basisUserNumber, numOfXi, option, collapsed):
         cubicBasis.QuadratureLocalFaceGaussEvaluateSet(True)
         cubicBasis.CreateFinish()
         # Output for diagnostics
-        print "----> Set up tricubic hermite basis function for geometry and trilinear for hydrostatic pressure <----\n"
+        print("----> Set up tricubic hermite basis function for geometry and trilinear for hydrostatic pressure <----\n")
         return quadBasis, cubicBasis
 
 
@@ -129,7 +129,7 @@ def DecompositionSetUp(decompositionUserNumber, mesh, numberOfComputationalNodes
     decomposition.CreateFinish()
 
     # Output for diagnostics
-    print "----> Set up decomposition <----\n"
+    print("----> Set up decomposition <----\n")
     return decomposition
 
 
@@ -148,11 +148,11 @@ def GeometricFieldSetUp(geometricFieldUserNumber, region, decomposition, option)
         if option[1] == 1:
             geometricField.ScalingTypeSet(iron.FieldScalingTypes.UNIT)
             # Output for diagnostics
-            print "----> Set up tricubic Hermite geometric field with unit scaling <----\n"
+            print("----> Set up tricubic Hermite geometric field with unit scaling <----\n")
         elif option[1] == 2:
             geometricField.ScalingTypeSet(iron.FieldScalingTypes.ARITHMETIC_MEAN)
             # Output for diagnostics
-            print "----> Set up tricubic Hermite geometric field with arithmetic mean scaling <----\n"
+            print("----> Set up tricubic Hermite geometric field with arithmetic mean scaling <----\n")
 
     geometricField.CreateFinish()
 
@@ -187,7 +187,7 @@ def GeometricFieldInitialise(xNodes, yNodes, zNodes, geometricField, numNodes, o
                                                     iron.GlobalDerivativeConstants.GLOBAL_DERIV_S3, node + 1, 3, max(zNodes))
 
     # Output
-    print "----> Initialised geometric nodal values <----\n"
+    print("----> Initialised geometric nodal values <----\n")
 
     return geometricField
 
@@ -208,7 +208,7 @@ def GeometricFieldExport(region, filename):
     exportField.Finalise()
 
     # Output
-    print "----> Export undeformed geometry <----\n"
+    print("----> Export undeformed geometry <----\n")
 
 #=================================================================================#
 
@@ -219,13 +219,13 @@ def ExtractNodesElements(filename):
     try:
         fid_node = open(filename+'.exnode', 'r')
     except IOError:
-        print 'ERROR: Unable to open '+filename+'.exnode'
+        print('ERROR: Unable to open '+filename+'.exnode')
         return
 
     try:
         fid_elem = open(filename+'.exelem', 'r')
     except IOError:
-        print 'ERROR: Unable to open '+filename+'.exelem'
+        print('ERROR: Unable to open '+filename+'.exelem')
         return
 
     for i in range(1,86):
@@ -303,11 +303,11 @@ def FibreFieldSetUp(fibreFieldUserNumber, region, decomposition, geometricField,
         if option[1] == 1:
             fibreField.ScalingTypeSet(iron.FieldScalingTypes.UNIT)
             # Output
-            print "----> Set up tricubic hermite fibre field with unit scaling <----\n"
+            print("----> Set up tricubic hermite fibre field with unit scaling <----\n")
         elif option[1] == 2:
             fibreField.ScalingTypeSet(iron.FieldScalingTypes.ARITHMETIC_MEAN)
             # Output
-            print "----> Set up tricubic hermite fibre field with arithmetic mean scaling <----\n"
+            print("----> Set up tricubic hermite fibre field with arithmetic mean scaling <----\n")
 
         if microstructure == 1:
             # Homogeneous fibre field.
@@ -333,7 +333,7 @@ def FibreFieldSetUp(fibreFieldUserNumber, region, decomposition, geometricField,
                 fibreField.ParameterSetUpdateNodeDP(iron.FieldVariableTypes.U, iron.FieldParameterSetTypes.VALUES,
                                                     1, iron.GlobalDerivativeConstants.NO_GLOBAL_DERIV, n,
                                                     component, angle)
-        print "----> Initialised heterogeneous fibre angles <----\n"
+        print("----> Initialised heterogeneous fibre angles <----\n")
     return fibreField
 
 
@@ -348,7 +348,7 @@ def MaterialFieldSetUpAuto(materialFieldUserNumber, equationsSet, params, cellML
     equationsSet.MaterialsCreateStart(materialFieldUserNumber, materialField)
     materialField.VariableLabelSet(iron.FieldVariableTypes.U, "Material")
     if cellMLOption[0]:
-        print "----> CellML Material Field using gauss point interpolation <----\n"
+        print("----> CellML Material Field using gauss point interpolation <----\n")
         for component, param in enumerate(params, 1):
             materialField.ComponentInterpolationSet(iron.FieldVariableTypes.U, component,
                                                     iron.FieldInterpolationTypes.GAUSS_POINT_BASED)
@@ -361,7 +361,7 @@ def MaterialFieldSetUpAuto(materialFieldUserNumber, equationsSet, params, cellML
                                                   component, param)
 
     # Output
-    print "----> Initialised " + str(len(params)) + " material parameters <----\n"
+    print("----> Initialised " + str(len(params)) + " material parameters <----\n")
     return materialField, equationsSet
 
 
@@ -381,12 +381,12 @@ def MaterialFieldSetUp(materialFieldUserNumber, region, decomposition, geometric
     materialField.ScalingTypeSet(iron.FieldScalingTypes.ARITHMETIC_MEAN)
 
     if cellMLOption[0]:
-        print "----> CellML Material Field using gauss point interpolation <----\n"
+        print("----> CellML Material Field using gauss point interpolation <----\n")
         for component, param in enumerate(params, 1):
             materialField.ComponentInterpolationSet(iron.FieldVariableTypes.U, component,
                                                     iron.FieldInterpolationTypes.GAUSS_POINT_BASED)
     else:
-        print "----> Material Field using constant interpolation <----\n"
+        print("----> Material Field using constant interpolation <----\n")
         for component, param in enumerate(params, 1):
             materialField.ComponentInterpolationSet(iron.FieldVariableTypes.U, component,
                                                     iron.FieldInterpolationTypes.CONSTANT)
@@ -407,7 +407,7 @@ def MaterialFieldSetUp(materialFieldUserNumber, region, decomposition, geometric
     materialField.ParameterSetUpdateStart(iron.FieldVariableTypes.U, iron.FieldParameterSetTypes.VALUES)
     materialField.ParameterSetUpdateFinish(iron.FieldVariableTypes.U, iron.FieldParameterSetTypes.VALUES)
     # Output
-    print "----> Initialised " + str(len(params)) + " material parameters <----\n"
+    print("----> Initialised " + str(len(params)) + " material parameters <----\n")
     return materialField
 
 
@@ -421,7 +421,7 @@ def DependentFieldSetUp(dependentFieldUserNumber, equationsSet, option, cellMLOp
     dependentField.VariableLabelSet(iron.FieldVariableTypes.U, "Dependent")
 
     if cellMLOption[0]:
-        print '----> Labelling dependent field strain and stress <----\n'
+        print('----> Labelling dependent field strain and stress <----\n')
         dependentField.VariableLabelSet(iron.FieldVariableTypes.U1, "Strain")
         dependentField.VariableLabelSet(iron.FieldVariableTypes.U2, "Stress")
 
@@ -437,7 +437,7 @@ def DependentFieldSetUp(dependentFieldUserNumber, equationsSet, option, cellMLOp
         dependentField.ComponentInterpolationSet(iron.FieldVariableTypes.DELUDELN, 4,
                                                  iron.FieldInterpolationTypes.ELEMENT_BASED)
         # Output
-        print "----> Use element based interpolation for hydrostatic pressure <----\n"
+        print("----> Use element based interpolation for hydrostatic pressure <----\n")
 
     elif option[0] == 2:
         # Tricubic Hermite
@@ -453,15 +453,15 @@ def DependentFieldSetUp(dependentFieldUserNumber, equationsSet, option, cellMLOp
                                                  iron.FieldInterpolationTypes.NODE_BASED)
 
         # Output
-        print "----> Interpolate hydrostatic pressure linearly <----\n"
+        print("----> Interpolate hydrostatic pressure linearly <----\n")
         if option[1] == 1:
             dependentField.ScalingTypeSet(iron.FieldScalingTypes.UNIT)
             # Output
-            print "----> Set up dependent field with unit scaling <----\n"
+            print("----> Set up dependent field with unit scaling <----\n")
         elif option[1] == 2:
             dependentField.ScalingTypeSet(iron.FieldScalingTypes.ARITHMETIC_MEAN)
             # Output
-            print "----> Set up dependent field with arithmetic mean scaling <----\n"
+            print("----> Set up dependent field with arithmetic mean scaling <----\n")
 
     if cellMLOption[0]:
         for i in [1,2,3,4,5,6]:
@@ -487,7 +487,7 @@ def DependentFieldInitialise(dependentField, geometricField, hydroInit):
                                                              iron.FieldParameterSetTypes.VALUES, i)
 
     # Output
-    print "----> Initialised dependent field with undeformed geometry <----\n"
+    print("----> Initialised dependent field with undeformed geometry <----\n")
 
     # Set hydrostatic pressure initial guess.
     dependentField.ComponentValuesInitialise(iron.FieldVariableTypes.U, iron.FieldParameterSetTypes.VALUES, 4,
@@ -496,7 +496,7 @@ def DependentFieldInitialise(dependentField, geometricField, hydroInit):
     dependentField.ParameterSetUpdateStart(iron.FieldVariableTypes.U, iron.FieldParameterSetTypes.VALUES)
     dependentField.ParameterSetUpdateFinish(iron.FieldVariableTypes.U, iron.FieldParameterSetTypes.VALUES)
     # Output
-    print "----> Initialised hydrostatic pressure guess of " + str(hydroInit) + " <----\n"
+    print("----> Initialised hydrostatic pressure guess of " + str(hydroInit) + " <----\n")
 
 
 #=================================================================================#
@@ -520,18 +520,18 @@ def DependentFieldWarmStart(dependentField, deformedGeomDOFs, deformedHydro, opt
         # Initialise dependent field to deformed warmstart solution.
         numNodes = len(deformedGeomDOFs[0,:,0])
         for component in [1,2,3]:
-            print 'Component: ', component
+            print('Component: ', component)
             for node in range(1, numNodes+1):
-                print '  Node number: ', node
+                print('  Node number: ', node)
                 for deriv in [1,2,3,4,5,6,7,8]:
                     value = deformedGeomDOFs[component-1,node-1,deriv-1]
-                    print '    value: ', value
+                    print('    value: ', value)
                     dependentField.ParameterSetUpdateNodeDP(iron.FieldVariableTypes.U, iron.FieldParameterSetTypes.VALUES, 1,
                                                             deriv, node, component, value)
 
 
         # Output
-        print "----> Initialised dependent field with warm-start geometry <----\n"
+        print("----> Initialised dependent field with warm-start geometry <----\n")
 
 
         # Set hydrostatic pressure initial guess.
@@ -542,7 +542,7 @@ def DependentFieldWarmStart(dependentField, deformedGeomDOFs, deformedHydro, opt
     dependentField.ParameterSetUpdateStart(iron.FieldVariableTypes.U, iron.FieldParameterSetTypes.VALUES)
     dependentField.ParameterSetUpdateFinish(iron.FieldVariableTypes.U, iron.FieldParameterSetTypes.VALUES)
     # Output
-    print "----> Initialised warm-start hydrostatic pressure of " + str(deformedHydro) + " <----\n"
+    print("----> Initialised warm-start hydrostatic pressure of " + str(deformedHydro) + " <----\n")
 
 
 #=================================================================================#
@@ -560,7 +560,7 @@ def ParseWarmStart(filename, option):
                 fid = open(filename, 'r')
 
             except IOError:
-                print 'ERROR: Unable to open ', filename
+                print('ERROR: Unable to open ', filename)
                 return
 
             try:
@@ -647,7 +647,7 @@ def ParseWarmStart(filename, option):
                     temp = temp.split()
                     num = temp[len(temp)-1]
                 hydro = numpy.array(hydro)
-                print hydro
+                print(hydro)
                 return nodes, hydro
             finally:
                 fid.close()
@@ -661,7 +661,7 @@ def ParseWarmStart(filename, option):
                 fid = open(filename, 'r')
 
             except IOError:
-                print 'ERROR: Unable to open ', filename
+                print('ERROR: Unable to open ', filename)
                 return
 
             try:
@@ -742,7 +742,7 @@ def ParseWarmStart(filename, option):
                         temp = temp.split()
                     num = temp[len(temp)-1]
                 hydro = numpy.array(hydro)
-                print hydro
+                print(hydro)
                 return nodes, hydro
             finally:
                 fid.close()
@@ -780,26 +780,26 @@ def CellMLSetUp(cellMLUserNumber, cellMLModelsFieldUserNumber, cellMLParametersF
 
     # Map the strain from dependentField U1 variable to CellML.
     for component, variable in enumerate(strain, 1):
-        #print "----> Mapping strain ", str(variable)+ " to CellML <----\n"
+        #print("----> Mapping strain ", str(variable)+ " to CellML <----\n")
         cellML.CreateFieldToCellMLMap(dependentField, iron.FieldVariableTypes.U1, component,
                                       iron.FieldParameterSetTypes.VALUES, cellMLModelIndex, "equations/" + variable,
                                       iron.FieldParameterSetTypes.VALUES)
 
     # Map the material parameters from material field to CellML.
     for component, parameter in enumerate(parameters, 1):
-        #print "----> Mapping parameter ", str(parameter)+ " to CellML <----\n"
+        #print("----> Mapping parameter ", str(parameter)+ " to CellML <----\n")
         cellML.CreateFieldToCellMLMap(materialField, iron.FieldVariableTypes.U, component,
                                       iron.FieldParameterSetTypes.VALUES, cellMLModelIndex, "equations/" + parameter,
                                       iron.FieldParameterSetTypes.VALUES)
 
     # Map the stress from CellML to dependentFieldU2 variable
     for component, variable in enumerate(stress2PK, 1):
-        #print "----> Mapping stress ", str(variable)+ " to CellML <----\n"
+        #print("----> Mapping stress ", str(variable)+ " to CellML <----\n")
         cellML.CreateCellMLToFieldMap(cellMLModelIndex, "equations/" + variable, iron.FieldParameterSetTypes.VALUES,
                                       dependentField, iron.FieldVariableTypes.U2, component,
                                       iron.FieldParameterSetTypes.VALUES)
     cellML.FieldMapsCreateFinish()
-    print "----> Finished mapping variables to CellML <----\n"
+    print("----> Finished mapping variables to CellML <----\n")
 
     # Create models field for CellML
     CellMLModelsField = iron.Field()
@@ -811,7 +811,7 @@ def CellMLSetUp(cellMLUserNumber, cellMLModelsFieldUserNumber, cellMLParametersF
         elif option[1] == 2:
             CellMLModelsField.ScalingTypeSet(iron.FieldScalingTypes.ARITHMETIC_MEAN)
     cellML.ModelsFieldCreateFinish()
-    print "----> Finished creating models field for CellML <----\n"
+    print("----> Finished creating models field for CellML <----\n")
     # No need to create a state field since we aren't integrating.
 
     # Create parameters field for CellML, this is used as the strain field.
@@ -824,7 +824,7 @@ def CellMLSetUp(cellMLUserNumber, cellMLModelsFieldUserNumber, cellMLParametersF
         elif option[1] == 2:
             CellMLParametersField.ScalingTypeSet(iron.FieldScalingTypes.ARITHMETIC_MEAN)
     cellML.ParametersFieldCreateFinish()
-    print "----> Finished creating parameters field for CellML <----\n"
+    print("----> Finished creating parameters field for CellML <----\n")
     # Create intermediate field for CellML, this is used as the stress field.
     CellMLIntermediateField = iron.Field()
     cellML.IntermediateFieldCreateStart(cellMLIntermediateFieldUserNumber, CellMLIntermediateField)
@@ -835,7 +835,7 @@ def CellMLSetUp(cellMLUserNumber, cellMLModelsFieldUserNumber, cellMLParametersF
         elif option[1] == 2:
             CellMLIntermediateField.ScalingTypeSet(iron.FieldScalingTypes.ARITHMETIC_MEAN)
     cellML.IntermediateFieldCreateFinish()
-    print "----> Finished creating intermediate field for CellML <----\n"
+    print("----> Finished creating intermediate field for CellML <----\n")
 
     return cellML, CellMLModelsField, CellMLParametersField, CellMLIntermediateField
 #=================================================================================#
@@ -897,7 +897,7 @@ def EquationsSetSetUp(equationsSet):
 #=================================================================================#
 def ProblemSolverSetup(equationsSet,problemUserNumber,maxIter, TOL, cellMLOption):
     # This function sets up the problem as well as the solver options. 
-    print "----> Set up equations <----\n"
+    print("----> Set up equations <----\n")
     # Define problem
     problem = iron.Problem()
 
@@ -913,7 +913,7 @@ def ProblemSolverSetup(equationsSet,problemUserNumber,maxIter, TOL, cellMLOption
     problem.CreateStart(problemUserNumber, problemSpecification)
     problem.CreateFinish()
     # Output
-    print "----> Set up problem <----\n"
+    print("----> Set up problem <----\n")
     # Create control loops
     problem.ControlLoopCreateStart()
     controlLoop = iron.ControlLoop()
@@ -924,7 +924,7 @@ def ProblemSolverSetup(equationsSet,problemUserNumber,maxIter, TOL, cellMLOption
     #controlLoop.MaximumIterationsSet(3)
     problem.ControlLoopCreateFinish()
     # Output
-    print "----> Set up control loop <----\n"
+    print("----> Set up control loop <----\n")
     # Create nonlinear numerical solver
     linearSolver = iron.Solver()
     nonLinearSolver = iron.Solver()
@@ -957,7 +957,7 @@ def ProblemSolverSetup(equationsSet,problemUserNumber,maxIter, TOL, cellMLOption
         problem.CellMLEquationsCreateFinish()
 
     # Output
-    print "----> Set up linear and nonlinear solvers <----\n"
+    print("----> Set up linear and nonlinear solvers <----\n")
     # Add solver equations sets which encompass the physics
     solverEquations = iron.SolverEquations()
     solver = iron.Solver()
@@ -968,7 +968,7 @@ def ProblemSolverSetup(equationsSet,problemUserNumber,maxIter, TOL, cellMLOption
     equationSetIndex = solverEquations.EquationsSetAdd(equationsSet)
     problem.SolverEquationsCreateFinish()
     # Output
-    print "----> Set up solver with equations <----\n"
+    print("----> Set up solver with equations <----\n")
 
     return problem, solverEquations
 #=================================================================================#
@@ -1030,7 +1030,7 @@ def BCCubeSingleFace(solverEquations, dependentField, appliedFace, faceNormal, a
 
 
     # Output
-    print "----> Implemented fixed boundary conditions <----\n"
+    print("----> Implemented fixed boundary conditions <----\n")
 
     # Initialise applied faces.
     if optionBC == 1:
@@ -1040,7 +1040,7 @@ def BCCubeSingleFace(solverEquations, dependentField, appliedFace, faceNormal, a
                                        iron.GlobalDerivativeConstants.NO_GLOBAL_DERIV, node, appliedDirection,
                                        iron.BoundaryConditionsTypes.FIXED, increm)
         # Output
-        print "----> Implemented compression/extension boundary condition of " + str(increm) + " <----\n"
+        print("----> Implemented compression/extension boundary condition of " + str(increm) + " <----\n")
 
     elif optionBC == 2:
         # Option 2: Force
@@ -1049,7 +1049,7 @@ def BCCubeSingleFace(solverEquations, dependentField, appliedFace, faceNormal, a
                                        iron.GlobalDerivativeConstants.NO_GLOBAL_DERIV, node, appliedDirection,
                                        iron.BoundaryConditionsTypes.FIXED_INCREMENTED, increm)
         # Output
-        print "----> Implemented force boundary condition of " + str(increm) + "N <----\n"
+        print("----> Implemented force boundary condition of " + str(increm) + "N <----\n")
     elif optionBC == 3:
         # Option 3: Pressure
         for node in appliedFace:
@@ -1057,7 +1057,7 @@ def BCCubeSingleFace(solverEquations, dependentField, appliedFace, faceNormal, a
                                        iron.GlobalDerivativeConstants.NO_GLOBAL_DERIV, node, faceNormal,
                                        iron.BoundaryConditionsTypes.PRESSURE_INCREMENTED, increm)
         # Output
-        print "----> Implemented pressure boundary condition of " + str(increm) + " kPa <----\n"
+        print("----> Implemented pressure boundary condition of " + str(increm) + " kPa <----\n")
 
     solverEquations.BoundaryConditionsCreateFinish()
 
@@ -1080,11 +1080,11 @@ def BCCantilever(solverEquations, dependentField, appliedFace, faceNormal, appli
                                            iron.GlobalDerivativeConstants.NO_GLOBAL_DERIV, node, component,
                                            iron.BoundaryConditionsTypes.FIXED, 0.0)
                 if option[0] == 2:
-                    # print 'Node number ', node
+                    # print('Node number ', node)
 
                     # Fix derivatives
                     if fixedFaceNormal == 1:
-                        #print "Fixed back normal is 1. "
+                        #print("Fixed back normal is 1. ")
                         derivFix = [iron.GlobalDerivativeConstants.GLOBAL_DERIV_S2,
                                     iron.GlobalDerivativeConstants.GLOBAL_DERIV_S1_S2,
                                     iron.GlobalDerivativeConstants.GLOBAL_DERIV_S3,
@@ -1111,7 +1111,7 @@ def BCCantilever(solverEquations, dependentField, appliedFace, faceNormal, appli
 
 
     # Output
-    print "----> Implemented fixed boundary conditions <----\n"
+    print("----> Implemented fixed boundary conditions <----\n")
 
     # Initialise applied faces.
     if optionBC == 1:
@@ -1121,7 +1121,7 @@ def BCCantilever(solverEquations, dependentField, appliedFace, faceNormal, appli
                                        iron.GlobalDerivativeConstants.NO_GLOBAL_DERIV, node, appliedDirection,
                                        iron.BoundaryConditionsTypes.FIXED, increm)
         # Output
-        print "----> Implemented compression/extension boundary condition of " + str(increm) + " <----\n"
+        print("----> Implemented compression/extension boundary condition of " + str(increm) + " <----\n")
 
     elif optionBC == 2:
         # Option 2: Force
@@ -1130,18 +1130,18 @@ def BCCantilever(solverEquations, dependentField, appliedFace, faceNormal, appli
                                        iron.GlobalDerivativeConstants.NO_GLOBAL_DERIV, node, appliedDirection,
                                        iron.BoundaryConditionsTypes.FIXED_INCREMENTED, increm)
         # Output
-        print "----> Implemented force boundary condition of " + str(increm) + "N <----\n"
+        print("----> Implemented force boundary condition of " + str(increm) + "N <----\n")
     elif optionBC == 3:
         # Option 3: Pressure
-        print 'Pressure applied on: '
+        print('Pressure applied on: ')
         for node in appliedFace:
-            print 'Node ', node
+            print('Node ', node)
             boundaryConditions.AddNode(dependentField, iron.FieldVariableTypes.DELUDELN, 1,
                                        iron.GlobalDerivativeConstants.NO_GLOBAL_DERIV, node, faceNormal,
                                        iron.BoundaryConditionsTypes.PRESSURE_INCREMENTED, increm)
-        print 'Face normal ', faceNormal
+        print('Face normal ', faceNormal)
         # Output
-        print "----> Implemented pressure boundary condition of " + str(increm) + " kPa <----\n"
+        print("----> Implemented pressure boundary condition of " + str(increm) + " kPa <----\n")
 
     solverEquations.BoundaryConditionsCreateFinish()
 
@@ -1234,7 +1234,7 @@ def ExportResults(dependentField, deformedFieldUserNumber, decomposition, region
     fields.Finalise()
 
     # Output
-    print "----> Export deformed geometric solutions <----\n"
+    print("----> Export deformed geometric solutions <----\n")
 
 
 #=================================================================================#
@@ -1251,28 +1251,28 @@ def ExportStressStrain(elements, xiPositions, cellML, equationsSet, filename_dis
         file_disp = open(filename_disp, 'w')
 
     except IOError:
-        print 'ERROR: Unable to open ', filename_disp
+        print('ERROR: Unable to open ', filename_disp)
         return
 
     try:
         file_strain = open(filename_strain, 'w')
 
     except IOError:
-        print 'ERROR: Unable to open ', filename_strain
+        print('ERROR: Unable to open ', filename_strain)
         return
 
     try:
         file_stress2PK = open(filename_stress2PK, 'w')
 
     except IOError:
-        print 'ERROR: Unable to open ', filename_stress2PK
+        print('ERROR: Unable to open ', filename_stress2PK)
         return
 
     try:
         file_stressCauchy = open(filename_stressCauchy, 'w')
 
     except IOError:
-        print 'ERROR: Unable to open ', filename_stressCauchy
+        print('ERROR: Unable to open ', filename_stressCauchy)
         return
 
     # Write file headers for displacement
@@ -1367,4 +1367,4 @@ def ExportStressStrain(elements, xiPositions, cellML, equationsSet, filename_dis
     file_stressCauchy.close()
 
     # Output
-    print "----> Export stresses and strains of deformed solution <----\n"
+    print("----> Export stresses and strains of deformed solution <----\n")

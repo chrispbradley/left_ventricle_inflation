@@ -127,7 +127,7 @@ class Exregion(object):
         try:
             indices = map(int, element_line.split(':')[1].split())
         except:
-            print element_line
+            print(element_line)
             raise
         if indices[1] == 0 and indices[2] == 0:
             #raise ExfileError(f, "Face or line elements not supported")

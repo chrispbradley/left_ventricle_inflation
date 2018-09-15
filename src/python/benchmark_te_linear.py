@@ -87,7 +87,7 @@ def truncated_ellipsoid_LV(h):
 
     [nodes, reversenodemap, nodemap] = numpy.unique(nodes, True, True)
     elem = nodemap(naive_elem)
-    print 'removed duplicates '+str(temp)+' -> '+str(len(nodes)) + '\n'
+    print('removed duplicates '+str(temp)+' -> '+str(len(nodes)) + '\n')
 
     UV = naive_nodes[reversenodemap, 4:5]
 
