@@ -295,10 +295,10 @@ class ExnodeSection(object):
                 new_values = map(float, line.split())
             except ValueError:
                 raise ExfileError(f, "Expecting node values, got: %s" % line.strip())
-            if read + len(new_values) > self.num_node_values:
+            if read + len(list(new_values)) > self.num_node_values:
                 raise ExfileError(f, "Got more node values than expected.")
-            values[read:read + len(new_values)] = new_values
-            read += len(new_values)
+            values[read:read + len(list(new_values))] = new_values
+            read += len(list(new_values))
 
         self.nodes.append(ExnodeNode(number, values))
 
